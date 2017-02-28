@@ -208,7 +208,6 @@ class MarcSource < Marc
       puts "No leader present"
       return nil
     end
-    
     if leader.match(/......[dcp]c.............../)
       rt = RECORD_TYPES[:collection]
     elsif leader.match(/......pd.............../) # Mixed material, subunit, ex convolutum
