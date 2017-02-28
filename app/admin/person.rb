@@ -4,7 +4,40 @@ ActiveAdmin.register Person do
 
   # Remove mass-delete action
   batch_action :destroy, false
-  
+
+  # TODO move this to AuthorityControllerActions and/or model
+  batch_action "Zusammenführen" do |ids|
+    false_select = false
+    people=Person.find(ids)
+    new_person = nil
+    # 8-)
+    old_people = []
+    people.each do |p|
+      if p.individualized?
+        if new_person
+          false_select = true
+        end
+        new_person = p
+      else
+        old_people << p
+      end
+    end
+    if !new_person || false_select
+      redirect_to :back, alert: "There are more than one individualized person! Please check your selection."
+    else
+      old_people.each do |old_person|
+        old_person.referring_sources.each do |source|
+          source.marc.change_person(old_person, new_person)
+          source.update_links
+          source.save
+          old_person.reindex
+          new_person.reindex
+        end
+      end
+      redirect_to :back, alert: "People merged"
+    end
+  end
+
   # Remove all action items
   config.clear_action_items!
   config.sort_order = 'full_name_asc'
@@ -149,6 +182,17 @@ ActiveAdmin.register Person do
   index :download_links => false do
     selectable_column if !is_selection_mode?
     column (I18n.t :filter_id), :id
+    column "ind." do |p| 
+          p.individualized? ? status_tag( "yes", :ok  ) : status_tag( "no"  )
+    end
+    column "multiple" do |p|
+      if p.multiple_entries?
+        a href:  admin_people_path(q: { full_name_equals: p.full_name }) do
+            status_tag('multiple', label: 'multiple', class: 'error')
+        end
+        #link_to status_tag("Multiple", :ok), admin_people_path(q: { full_name_or_400a_contains: p.full_name })
+      end
+    end
     column (I18n.t :filter_wf_stage) {|person| status_tag(person.wf_stage,
       label: I18n.t('status_codes.' + person.wf_stage, locale: :en))} 
     column (I18n.t :filter_full_name), :full_name

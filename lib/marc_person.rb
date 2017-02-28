@@ -75,6 +75,16 @@ class MarcPerson < Marc
     
     [gender, birth_place, source, comments]
   end
+
+  def individualized?
+    if node = first_occurance("042", "a")
+      if node.content == "individualized"
+        return true
+      end
+    end
+    return false
+
+  end
   
   
 end

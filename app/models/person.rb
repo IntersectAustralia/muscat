@@ -313,5 +313,15 @@ class Person < ActiveRecord::Base
     str.gsub!("\"", "")
     Viaf::Interface.search(str, self.to_s)
   end
+
+  def individualized?
+    marc.individualized?
+  end
+  
+  def multiple_entries?
+    Person.solr_search {fulltext full_name}.total > 1 ? true : false
+  end
+
+
 end
 
