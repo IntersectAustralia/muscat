@@ -484,25 +484,21 @@ class MarcSource < Marc
     end
 		
   end
- 
+
   def change_person(old_person, new_person)
     tags = %w(100 700)
     tags.each do |tag|
       each_by_tag(tag) do |t|
         if t.fetch_first_by_tag("0").content == old_person.id
-          node = MarcNode.new(@model, tag, "", "1#")
-          node.add_at(MarcNode.new(@model, "a", new_person.full_name, nil), 0)
-          node.add_at(MarcNode.new(@model, "d", new_person.life_dates, nil), 0)
-          node.add_at(MarcNode.new(@model, "0", new_person.id, nil), 0)
-          node.sort_alphabetically
+          node = new_person.marc.to_source_node(tag)
           t.destroy_yourself
-          @root.add_at(node, get_insert_position(node.tag))
+          @root.add_at(node, get_insert_position(tag))
         end
       end
     end
     @root.resolve_externals 
   end
-
+  
   def set_record_type(rt)
     @record_type = rt
   end

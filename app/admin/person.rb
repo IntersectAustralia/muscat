@@ -23,7 +23,7 @@ ActiveAdmin.register Person do
       end
     end
     if !new_person || false_select
-      redirect_to :back, alert: "There are more than one individualized person! Please check your selection."
+      redirect_to :back, error: "There are more than one individualized person! Please check your selection."
     else
       old_people.each do |old_person|
         old_person.referring_sources.each do |source|
@@ -34,7 +34,9 @@ ActiveAdmin.register Person do
           new_person.reindex
         end
       end
-      redirect_to :back, alert: "People merged"
+      # HACK to return to the page of the previous index page
+      page = Rack::Utils.parse_nested_query(request.referer).select{|k,v| v if k.match(/coll/)}.values.first
+      redirect_to collection_path(clear_filters: true, page: page), info: "People merged!"
     end
   end
 
@@ -186,11 +188,12 @@ ActiveAdmin.register Person do
           p.individualized? ? status_tag( "yes", :ok  ) : status_tag( "no"  )
     end
     column "multiple" do |p|
-      if p.multiple_entries?
-        a href:  admin_people_path(q: { full_name_equals: p.full_name }) do
-            status_tag('multiple', label: 'multiple', class: 'error')
+      if p.multiple_entries? 
+        if p.referring_sources.size > 0
+          link_to "Mult", admin_people_path(coll: params[:page], q: { full_name_equals: p.full_name }),{:style=>'color:#FFFFFF; text-decoration:none;', :class => "multiple_with"}
+        else
+          link_to "Mult", admin_people_path(coll: params[:page], q: { full_name_equals: p.full_name }),{:style=>'color:#FFFFFF; text-decoration:none;', :class => "multiple_without"}
         end
-        #link_to status_tag("Multiple", :ok), admin_people_path(q: { full_name_or_400a_contains: p.full_name })
       end
     end
     column (I18n.t :filter_wf_stage) {|person| status_tag(person.wf_stage,

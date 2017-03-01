@@ -80,3 +80,16 @@ body.active_admin {
 .progress_bar_content {
     background-color: lighten($primary-color, 20%)
 }
+
+.multiple_with {
+    background: #d45f53;
+}
+.multiple_without {
+    background: #8daa92;
+}
+.multiple_with, .multiple_without {
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    padding: 3px 5px 2px 5px;
+    font-size: 0.8em;
+}

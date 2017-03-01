@@ -83,7 +83,16 @@ class MarcPerson < Marc
       end
     end
     return false
+  end
 
+  def to_source_node(tag)
+    person = Person.find(get_id)
+    node = MarcNode.new("source", tag, "", "1#")
+    node.add_at(MarcNode.new("source", "a", person.full_name, nil), 0)
+    node.add_at(MarcNode.new("source", "d", person.life_dates, nil), 0)
+    node.add_at(MarcNode.new("source", "0", person.id, nil), 0)
+    node.sort_alphabetically
+    return node
   end
   
   

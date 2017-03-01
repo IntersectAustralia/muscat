@@ -322,6 +322,5 @@ class Person < ActiveRecord::Base
     Person.solr_search {fulltext full_name}.total > 1 ? true : false
   end
 
-
 end
 
