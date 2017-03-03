@@ -184,9 +184,6 @@ ActiveAdmin.register Person do
   index :download_links => false do
     selectable_column if !is_selection_mode?
     column (I18n.t :filter_id), :id
-    column "ind." do |p| 
-          p.individualized? ? status_tag( "yes", :ok  ) : status_tag( "no"  )
-    end
     column "multiple" do |p|
       if p.multiple_entries? 
         if p.referring_sources.size > 0
@@ -196,6 +193,10 @@ ActiveAdmin.register Person do
         end
       end
     end
+    column "ind." do |p| 
+          p.individualized? ? status_tag( "yes", :ok  ) : status_tag( "no"  )
+    end
+ 
     column (I18n.t :filter_wf_stage) {|person| status_tag(person.wf_stage,
       label: I18n.t('status_codes.' + person.wf_stage, locale: :en))} 
     column (I18n.t :filter_full_name), :full_name
