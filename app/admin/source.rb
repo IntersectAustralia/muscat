@@ -47,6 +47,19 @@ ActiveAdmin.register Source do
         redirect_to admin_root_path, :flash => { :error => "#{I18n.t(:error_not_found)} (Source #{params[:id]})" }
         return
       end
+
+      # Try to load the MARC object.
+      begin
+        @item.marc.load_source true
+      rescue ActiveRecord::RecordNotFound
+        # If resolving the remote objects fails, it means
+        # Something went wrong saving the source, like a DB falure
+        # continue to show the page so the user does not panic, and
+        # show an error message. Also send a mail to the administrators
+        flash[:error] = I18n.t(:unloadable_record)
+        AdminNotifications.notify("Source #{@item.id} seems unloadable, please check", @item).deliver_now
+      end
+      
       @editor_profile = EditorConfiguration.get_show_layout @item
       @prev_item, @next_item, @prev_page, @next_page = Source.near_items_as_ransack(params, @item)
       
@@ -87,6 +100,18 @@ ActiveAdmin.register Source do
         when :edition then "011_edition.marc"
         else nil
       end
+      
+      # Try to load the MARC object.
+      # This is the same trap as in show but here we
+      # PREVENT opening the editor. Redirect to the show page
+      # and inform the admins.
+      begin
+        @item.marc.load_source true
+      rescue ActiveRecord::RecordNotFound
+        redirect_to admin_source_path @item
+        return
+      end
+      
       @item.marc.superimpose_template(template) if template
     end
 
@@ -128,7 +153,7 @@ ActiveAdmin.register Source do
         @source.record_type = base_item.record_type
         @template_name = @source.get_record_type.to_s
       elsif File.exists?("#{Rails.root}/config/marc/#{RISM::MARC}/source/" + params[:new_type] + '.marc')
-        new_marc = MarcSource.new(File.read("#{Rails.root}/config/marc/#{RISM::MARC}/source/" +params[:new_type] + '.marc'), MarcSource::RECORD_TYPES[@template_name.to_sym])
+        new_marc = MarcSource.new(File.read("#{Rails.root}/config/marc/#{RISM::MARC}/source/" + params[:new_type] + '.marc'), MarcSource::RECORD_TYPES[@template_name.to_sym])
         new_marc.load_source false # this will need to be fixed
         @source.marc = new_marc
         @template_name = params[:new_type].sub(/[^_]*_/,"")
@@ -215,9 +240,9 @@ ActiveAdmin.register Source do
   index :download_links => false do
     selectable_column if !is_selection_mode?
     column (I18n.t :filter_wf_stage) {|source| status_tag(source.wf_stage,
-      label: I18n.t('status_codes.' + source.wf_stage, locale: :en))} 
+      label: I18n.t('status_codes.' + (source.wf_stage != nil ? source.wf_stage : ""), locale: :en))} 
     column (I18n.t :filter_record_type) {|source| status_tag(source.get_record_type.to_s, 
-      label: I18n.t('record_types_codes.' + source.record_type.to_s, locale: :en))} 
+      label: I18n.t('record_types_codes.' + (source.record_type != nil ? source.record_type.to_s : ""), locale: :en))} 
     column (I18n.t :filter_id), :id  
     column (I18n.t :filter_composer), :composer
     column (I18n.t :filter_std_title), :std_title_shelforder, sortable: :std_title_shelforder do |element|

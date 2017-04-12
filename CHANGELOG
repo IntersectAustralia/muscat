@@ -1,12 +1,23 @@
 Muscat Changelog
 ================
 
+v3.6.9
+* Prevent crash when listing sources without wf_stage
+* When manipulating old version show message to the user if the version is stale
+* Send validation fail mails only for Source
+* When saving Sources from a job, reload them to prevent stale ones
+
 v3.6.8
+* Fix view helper for source when composer or std_title are nil
+* Check for existence of lnked elements in bk reindex job, this prevents it crashing
+* Add validation failure notification
+* Add offline record validation
 * Added SRU interface
 * Added holdings to method to_external
 * Added 204$n feeded by 690/383, #200
 * Changed order of LAT/LON in 034 of institution
 * Added rake task for executing maintenance scripts
+* Fixes #486 false workgroup trigger in institution
 
 v3.6.7
 * Updated Guidelines 

@@ -348,6 +348,7 @@ class MarcSource < Marc
         if w && w.content
           source = Source.find(w.content)
           type = "dc" if source.record_type != RECORD_TYPES[:edition_content]
+          t.add_at(MarcNode.new(@model, "a", source.name, nil), 0)
         else
           raise "Empty $w in 774"
         end
@@ -393,6 +394,20 @@ class MarcSource < Marc
       t.add_at(MarcNode.new("source", "2", "pe", nil), 0)
       t.sort_alphabetically
     end
+
+    # copy 691$n to 035 to have the local B/I id with collections
+    if parent_object.record_type == 8 && parent_object.id.to_s =~ /^993/
+      n035 = nil
+      each_by_tag("691") do |t|
+        b1 = t.fetch_first_by_tag("a").content rescue next
+        number = t.fetch_first_by_tag("n").content rescue next
+        if b1 && b1 == 'RISM B/I'
+          n035 = MarcNode.new("source", "035", "", "##")
+          n035.add_at(MarcNode.new("source", "a", number, nil), 0)
+        end
+      end
+      root.children.insert(get_insert_position("035"), n035) if n035
+    end
     
     # Add 040 if not exists; if 040$a!=DE-633 then add 040$c
     if by_tags("040").count == 0
@@ -431,13 +446,13 @@ class MarcSource < Marc
       wvno = t.fetch_first_by_tag("n")
       content = "#{wv.content rescue nil} #{wvno.content rescue nil}"
       next if existent.include?(content)
-      n240.add_at(MarcNode.new(@model, "n", content, nil), 0)
+      n240.add_at(MarcNode.new(@model, "n", content, nil), 0) if n240
     end
     each_by_tag("383") do |t|
       wvno = t.fetch_first_by_tag("b")
       content = "#{wvno.content rescue nil}"
       next if existent.include?(content)
-      n240.add_at(MarcNode.new(@model, "n", content, nil), 0)
+      n240.add_at(MarcNode.new(@model, "n", content, nil), 0) rescue nil
     end
 
     # Adding digital object links to 500 with new records
@@ -459,6 +474,10 @@ class MarcSource < Marc
       root.children.insert(get_insert_position("594"), n594)
     end
 
+    # First drop all internal remarks 
+    by_tags("599").each {|t| t.destroy_yourself}
+    
+    # Then add some if we include versions
     if versions
       versions.each do |v|
         author = v.whodunnit != nil ? "#{v.whodunnit}, " : ""
