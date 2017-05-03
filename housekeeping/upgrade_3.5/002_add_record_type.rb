@@ -39,6 +39,68 @@ def parse_240n(s)
   return opus
 end
 
+def split_033_code(code, subcode)
+  #migrate the 033
+  t = code.split("\n")
+  line = nil
+  for i in 0..t.count - 1
+    line = t[i] if t[i].include?(subcode)
+  end 
+  if line == nil
+    puts "033 cannot parse: #{code}"
+    return false, false
+  end
+  toks = line.split(" ")
+  if toks.length < 2
+    puts "033-2 cannot parse: #{code}"
+    return false, false
+  end
+  
+  return toks[1][0, 3], toks[1][3, 1]
+end
+
+def migrate033(tag, code, date, s)
+  return if code.include?("?")
+  return if !code
+  
+  if code == "d"
+    #tag.destroy_yourself
+    puts "#{s.id} 033 destroy on d, #{tag.to_s.strip}, #{date}"
+  elsif code.include?("[]")
+    #tag.destroy_yourself
+    puts "#{s.id} 033 destroy on [], #{tag.to_s.strip}, #{date}"
+    
+  elsif code.include?("mig")
+    a, b = split_033_code(code, "mig")
+    return if !a
+   
+    # Move it to the selected tag
+    ###
+   
+  elsif code.include?("cd")
+    # Copy the date in () to 033
+    # do the matchy-matchy
+    m = code.match(/\((\d{4})\)$/)
+    puts "Cannot parse #{code}" if !m
+    return if !m
+    date = m[1]
+    # Kill the old 033
+#    ###marc.by_tags("033").each {|t| t.destroy_yourself}
+    # Make the new one
+    # set it as single date
+#    new_033 = MarcNode.new("source", "033", "", "0#")
+#    new_033.add_at(MarcNode.new("source", "a", "#{date}----", nil), 0)
+#    new_033.sort_alphabetically
+
+#    marc.root.children.insert(marc.get_insert_position("033"), new_033)
+  elsif code.include?("ny")
+    #tag.destroy_yourself
+    puts "#{s.id} 033 destroy on ny, #{tag.to_s.strip}, #{date}"
+    
+  end
+  
+end
+
 pb = ProgressBar.new(Source.all.count)
 
 preserve508 = YAML::load(File.read("housekeeping/upgrade_3.5/508_conversion.yml"))
@@ -49,7 +111,11 @@ substitute240r = YAML::load(File.read("housekeeping/upgrade_3.5/240r.yml"))
 
 move852d = YAML::load(File.read("housekeeping/upgrade_3.5/852d.yml"))
 
+convert033 = YAML::load(File.read("housekeeping/upgrade_3.5/033.yml"))
+
 Source.all.each do |sa|
+  
+###  next if !convert033.has_key?(sa.id.to_s)
   
   s = Source.find(sa.id)
   s.paper_trail_event = "system upgrade"
@@ -67,6 +133,26 @@ Source.all.each do |sa|
   else
     "Empty record type for #{s.id}"
   end
+  
+  #401 - First and frontmost, migrate 033
+  
+  if convert033.has_key?(s.id.to_s) && convert033[s.id.to_s][1] != "NOT PARSABLE"
+    found  = false
+    marc.by_tags("033").each do |t|
+      t.fetch_all_by_tag("a").each do |ta|
+        next if !ta || !ta.content
+      
+        next if ta.content[0, 4] != convert033[s.id.to_s][1]
+        
+        migrate033(t, convert033[s.id.to_s][0], convert033[s.id.to_s][1], s)
+        found = true
+      end
+    end
+  
+    puts "#{s.id} - could not match 033 in table #{convert033[s.id.to_s][1]}" if !found
+  
+  end
+
   
   #204 Move 300 $b to 500
   marc.by_tags("300").each do |t|
@@ -177,15 +263,15 @@ Source.all.each do |sa|
               t.add_at(MarcNode.new("source", "z", transform, nil), 0)
               t.sort_alphabetically
               td.destroy_yourself
-              puts "Moved 852 $d to $z"
+              #puts "Moved 852 $d to $z"
             elsif table[:tag] == "541$e"
               #move it to 541, but check if it is there
               if marc.by_tags("541").count == 0
                 new_541 = MarcNode.new("source", "541", "", "1#")
-                puts "Created 541"
+                #puts "Created 541"
               else
                 new_541 = marc.by_tags("541")[0]
-                puts "Found 541"
+                #puts "Found 541"
               end
               new_541.add_at(MarcNode.new("source", "e", transform, nil), 0)
               new_541.sort_alphabetically
@@ -353,6 +439,20 @@ Source.all.each do |sa|
     ## NOTE 031 $e is DUPCATE and NOT deleted
     
   end
+  
+  # Move the / to | in 245
+  s.marc.each_by_tag("245") do |t|
+    t.each_by_tag("a") do |tn|
+
+      next if !(tn && tn.content)
+      next if !tn.content.include?("/")
+      
+      tn.content = tn.content.gsub(" / ", " | ")
+      
+      #$stderr.puts "Check 245$a #{s.id}: #{tn.content}" if tn.content.include?("/")
+    end
+  end
+
   
   # #208, drop 600
   marc.by_tags("600").each {|t| t.destroy_yourself}
