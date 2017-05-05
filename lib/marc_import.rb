@@ -171,8 +171,7 @@ class MarcImport
               puts "Could not find user #{name}".red
             end
           end
-        end
-        
+        end 
          # step 4. insert model into database
         begin
           model.save! #

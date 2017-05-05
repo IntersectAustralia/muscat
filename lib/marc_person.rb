@@ -75,6 +75,17 @@ class MarcPerson < Marc
     
     [gender, birth_place, source, comments]
   end
+ 
+  def get_authority_links
+    links = Hash.new {|hsh, key| hsh[key] = [] }
+    tags_024 = by_tags(["024"])    
+    tags_024.each do |tag|
+      agency = tag.fetch_first_by_tag("2").content rescue ""
+      agency_id = tag.fetch_first_by_tag("a").content rescue ""
+      links[agency] << agency_id
+    end
+    return links
+  end
 
   def individualized?
     if node = first_occurance("042", "a")

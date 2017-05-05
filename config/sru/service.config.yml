@@ -111,7 +111,12 @@ index:
   rism.wv:
     solr: 690n
     type: text
-
+  rism.provider:
+    solr: "0242"
+    type: text
+  rism.provider_id:
+    solr: 024a
+    type: text
   #bath.genreForm:
     #title: genreForm
     #solr: 001
