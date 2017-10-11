@@ -6,7 +6,8 @@ ActiveAdmin.register Person do
   batch_action :destroy, false
 
   # TODO move this to AuthorityControllerActions and/or model
-  batch_action "Zusammenführen" do |ids|
+  #batch_action "Zusammenführen" do |ids|
+  batch_action "Zusammenführen", if: proc{ current_user.has_role?('person_auth')  }  do |ids|
     false_select = false
     people=Person.find(ids)
     new_person = nil
