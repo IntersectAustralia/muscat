@@ -116,7 +116,9 @@ module ApplicationHelper
   def self.to_sanitized_date(string)
     return if string.blank?
     if string =~ /[0-9]{4}\-[0-9]{2}\-[0-9]{2}/
-      string.to_date
+      #string.to_date
+      d = DateTime.parse(string) rescue d = DateTime.now
+      return d
     elsif string.size == 4
       return DateTime.strptime(string, "%Y")
     else
@@ -130,6 +132,10 @@ module ApplicationHelper
     target = (to_date.year * 12 + to_date.month) - (Time.now.localtime.year * 12 + Time.now.localtime.month)
     start =  target + (from_date.year * 12 + from_date.month) - (to_date.year * 12 + to_date.month)
     (start..target)
+  end
+
+  def make_iiif_anchor(link)
+    return link.gsub("http://", "").gsub("/", "").gsub(":", "").gsub(".", "")
   end
 
 end

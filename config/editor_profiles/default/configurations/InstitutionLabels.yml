@@ -12,7 +12,7 @@ doc_cataloguing_collections:
   label:
     de: Erfassung von Sammlungen
     en: Cataloging collection and convoluta
-doc_functions:
+doc_edit_functions:
   label:
     de: "Grundsätzliche Funktionen"
     en: Basic functions
@@ -1186,6 +1186,12 @@ voc:
     fr: "Venezuela, Bolivarian Republic of"
     de: "Venezuela, Bolivarian Republic of"
     en: "Venezuela, Bolivarian Republic of"
+"XB-VN":
+  label:
+    it: "Viet Nam"
+    fr: "Viet Nam"
+    de: "Viet Nam"
+    en: "Viet Nam"
 "Library":
   label:
     it: "Biblioteca"

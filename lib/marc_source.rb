@@ -346,7 +346,7 @@ class MarcSource < Marc
       each_by_tag("774") do |t|
         w = t.fetch_first_by_tag("w")
         if w && w.content
-          source = Source.find(w.content)
+          source = Source.find(w.content) rescue next
           type = "dc" if source.record_type != RECORD_TYPES[:edition_content]
           t.add_at(MarcNode.new(@model, "a", source.name, nil), 0)
         else
@@ -457,7 +457,7 @@ class MarcSource < Marc
 
     # Adding digital object links to 500 with new records
     #TODO whe should drop the dublet entries in 500 with Digital Object Link prefix for older records
-    if !parent_object.digital_objects.empty? && parent_object.id >= 1001000000
+    if !parent_object.digital_objects.empty?# && parent_object.id >= 1001000000
       parent_object.digital_objects.each do |image|
         # FIXME we should use the domain name from application.rb instead
         path = image.attachment.path.gsub("/path/to/the/digital/objects/directory/", "http://muscat.rism.info/")
