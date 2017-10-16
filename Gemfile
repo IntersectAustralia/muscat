@@ -103,6 +103,7 @@ gem 'activerecord-import', ">= 0.4.0"
 
 gem 'ruby-prof'
 gem 'pry', :group => :development
+gem 'pry-byebug'
 
 # Background tasks
 # https://github.com/collectiveidea/delayed_job/issues/776

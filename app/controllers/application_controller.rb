@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
   def test_version_warning
     return if (RISM::TEST_SERVER == false)
     if action_name && ["new", "destroy", "edit", "marc_editor_save"].include?(action_name)
-      flash[:info] = "This muscat application is only for testing imported records of BRNO. Changes will be overwritten."
+      flash[:info] = "This muscat application is only for testing imported records of ICCU. Changes will be overwritten."
     end
   end
 

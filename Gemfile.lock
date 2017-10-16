@@ -135,6 +135,7 @@ GEM
       sass (~> 3.2)
       thor
     builder (3.2.2)
+    byebug (9.0.6)
     cancan (1.6.10)
     capybara (2.10.1)
       addressable
@@ -269,6 +270,9 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    pry-byebug (3.4.2)
+      byebug (~> 9.0)
+      pry (~> 0.10)
     rack (1.6.5)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -425,6 +429,7 @@ DEPENDENCIES
   progress_bar!
   progress_job!
   pry
+  pry-byebug
   rails (~> 4.2.0)
   rails-i18n!
   rails3-jquery-autocomplete!
