@@ -30,7 +30,8 @@ module RISM
     :source           => 1000000000,
     :standard_term    => 0,
     :standard_title   => 0,
-    :work             => 0
+    :work             => 0,
+    :canon_types      => 0
   }
   
   # Versionning timeout for marc models
