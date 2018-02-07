@@ -1,5 +1,9 @@
 module ApplicationHelper
   
+  def canon_type_default_autocomplete
+    autocomplete_canon_type_name_admin_canon_types_path
+  end
+
   def catalogue_default_autocomplete
     autocomplete_catalogue_name_admin_catalogues_path
   end

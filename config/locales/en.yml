@@ -235,6 +235,7 @@ en:
   menu_jobs: "Jobs"
   menu_holdings: "Holdings"
   menu_works: "Works"
+  menu_canon_types: "Canon Types"
   
   ### VARIOUS ELEMENTS
   recent_changes: "Lastest modifications"
@@ -467,6 +468,7 @@ en:
   filter_dist_594l: "Keyboard instruments"
   filter_dist_594m: "Other instruments"
   filter_dist_594n: "Basso continuo instruments"
+  filter_relationship_operator: "Relationship Operator"
  
   rism_any_key: "Any key"
   rism_a_flat: "A flat major/minor"

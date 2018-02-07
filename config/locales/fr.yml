@@ -234,6 +234,7 @@ fr:
   menu_jobs: "Tâches"
   menu_holdings: "Exemplaires"
   menu_works: "Oeuvres"
+  menu_canon_types: "Types de Canon"
   
   ### VARIOUS ELEMENTS
   recent_changes: "Dernières modifications"
