@@ -229,6 +229,7 @@ es:
   menu_cataloging: "Catalogizando"
   menu_jobs: "Tareas" # dudoso, tal vez empleos
   menu_holdings: "Holdings" # dudoso, no idea what it means
+  menu_canon_types: "Tipos de Canon"
   
   ### VARIOUS ELEMENTS
   recent_changes: "Modificaciones más recientes"

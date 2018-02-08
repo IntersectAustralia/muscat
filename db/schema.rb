@@ -11,7 +11,6 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171115073728) do
 
   create_table "DNB", id: false, force: :cascade do |t|
     t.integer "id",     limit: 4,     default: 0, null: false
@@ -22,6 +21,7 @@ ActiveRecord::Schema.define(version: 20171115073728) do
     t.integer "id",     limit: 4,          default: 0, null: false
     t.text    "ext_id", limit: 4294967295
   end
+ActiveRecord::Schema.define(version: 20180205061438) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 255
@@ -49,6 +49,22 @@ ActiveRecord::Schema.define(version: 20171115073728) do
   end
 
   add_index "bookmarks", ["user_id"], name: "index_bookmarks_on_user_id", using: :btree
+
+  create_table "canon_types", force: :cascade do |t|
+    t.string   "name",                  limit: 255
+    t.string   "relationship_operator", limit: 255
+    t.integer  "wf_audit",              limit: 4,   default: 0
+    t.integer  "wf_stage",              limit: 4,   default: 0
+    t.string   "wf_notes",              limit: 255
+    t.integer  "wf_owner",              limit: 4,   default: 0
+    t.integer  "wf_version",            limit: 4,   default: 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "lock_version",          limit: 4,   default: 0, null: false
+  end
+
+  add_index "canon_types", ["name"], name: "index_canon_types_on_name", using: :btree
+  add_index "canon_types", ["wf_stage"], name: "index_canon_types_on_wf_stage", using: :btree
 
   create_table "catalogues", force: :cascade do |t|
     t.string   "name",         limit: 255

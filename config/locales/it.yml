@@ -234,6 +234,7 @@ it:
   menu_jobs: "Processi in Background"
   menu_holdings: "Esemplari"
   menu_works: "Composizioni"
+  menu_canon_types: "Tipi di Canon"
   
   ### VARIOUS ELEMENTS
   recent_changes: "Ultime modifiche"
