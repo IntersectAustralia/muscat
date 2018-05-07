@@ -24,7 +24,7 @@ ActiveAdmin.register Source do
     
     after_destroy :check_model_errors
 
-    before_filter :only => [:index] do
+    before_action :only => [:index] do
         if params['commit'].blank?
                  #params['q'] = {:std_title_contains => "[Holding]"} 
         end
@@ -289,7 +289,7 @@ ActiveAdmin.register Source do
     active_admin_navigation_bar( self )
     @item = @arbre_context.assigns[:item]
     render :partial => "marc/show"
-    active_admin_embedded_source_list( self, @item, params[:qe], params[:src_list_page], !is_selection_mode? )
+    active_admin_embedded_source_list( self, @item, !is_selection_mode? )
     active_admin_digital_object( self, @item ) if !is_selection_mode?
     active_admin_user_wf( self, @item )
     active_admin_navigation_bar( self )

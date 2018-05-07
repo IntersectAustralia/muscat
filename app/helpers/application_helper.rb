@@ -68,7 +68,7 @@ module ApplicationHelper
   # Link a manuscript by its RISM id
   def application_helper_link_source_id(value, subfield, opac) # This could have never worked
     if opac
-      link_to(value, catalog_path(value))
+      link_to(value, solr_document_path(value))
     else
       link_to( value, { :action => "show", :controller => "admin/sources", :id => value })
     end
@@ -77,7 +77,7 @@ module ApplicationHelper
   # Link a manuscript by its RISM id
   def application_helper_link_to_library(value, subfield, opac)
 		if opac
-			link_to value, catalog_index_path(:search_field => "library_siglum", :q => value)
+			link_to value, search_catalog_path(:search_field => "library_siglum", :q => value)
 		else
 			value
 		end
@@ -105,7 +105,7 @@ module ApplicationHelper
   def get_allowed_record_type(source)
     return nil if !source.is_a? Source
 
-    if source.record_type == MarcSource::RECORD_TYPES[:source] || MarcSource::RECORD_TYPES[:collection]
+    if source.record_type == MarcSource::RECORD_TYPES[:source] || source.record_type == MarcSource::RECORD_TYPES[:collection]
       MarcSource::RECORD_TYPES[:collection]
     elsif source.record_type == MarcSource::RECORD_TYPES[:edition_content]
       MarcSource::RECORD_TYPES[:edition]

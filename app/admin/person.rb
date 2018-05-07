@@ -155,9 +155,9 @@ ActiveAdmin.register Person do
   
   index :download_links => false do
     selectable_column if !is_selection_mode?
-    column (I18n.t :filter_id), :id
     column (I18n.t :filter_wf_stage) {|person| status_tag(person.wf_stage,
       label: I18n.t('status_codes.' + (person.wf_stage != nil ? person.wf_stage : ""), locale: :en))} 
+    column (I18n.t :filter_id), :id
     column (I18n.t :filter_full_name), :full_name
     column (I18n.t :filter_life_dates), :life_dates
     column (I18n.t :filter_owner) {|person| User.find(person.wf_owner).name rescue 0} if current_user.has_any_role?(:editor, :admin)
@@ -192,7 +192,7 @@ ActiveAdmin.register Person do
     else
       render :partial => "marc/show"
     end
-    active_admin_embedded_source_list( self, person, params[:qe], params[:src_list_page], !is_selection_mode? )
+    active_admin_embedded_source_list( self, person, !is_selection_mode? )
     active_admin_digital_object( self, @item ) if !is_selection_mode?
     active_admin_user_wf( self, person )
     active_admin_navigation_bar( self )

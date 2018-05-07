@@ -335,6 +335,7 @@ es:
   filter_autograph_of: "Autógrafo de"
   filter_birth_place: "Lugar de nacimiento"
   filter_catalog: "Catálogo"
+  filter_category_type: "Categoría"
   filter_collection: "Colección"
   filter_comments: "Comentarios"
   filter_composer: "Compositor"
@@ -604,7 +605,11 @@ es:
     gross_pitch: "GROSS PITCH CONTOUR (MORE FUZZY SEARCH)"
     anchor: "SEARCH ONLY BEGINNING"
     erase: "ERASE ONE NOTE"
-   
+
+  # This is used for the "incipit" seach in the search history in BL
+  # Note the capital 'I'
+  Incipit: "Incipit"
+
   # date:
   # Empty lines for matching line numbers with other translation files  
   #

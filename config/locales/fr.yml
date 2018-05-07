@@ -4,7 +4,7 @@ fr:
 # Pad for italian, it has 2 missing items
 #
 #
-    dashboard: "Tableau de bord"
+    dashboard: "Activité de la semaine dernière"
     dashboard_welcome:
       welcome: "Bienvenue dans Active Admin. Ceci est la page par défaut."
       call_to_action: "Pour ajouter des sections au tableau de bord, consultez 'app/admin/dashboard.rb'"
@@ -228,7 +228,7 @@ fr:
   menu_contact: "Contact"
   menu_search_history: "Historique de recherche"
   menu_guidelines: "Directives de catalogage"
-  menu_marc_documentation: "Configuration Marc"
+  menu_marc_documentation: "Configuration MARC"
   menu_guidelines_top: "Instructions"
   menu_cataloging: "Catalogage"
   menu_jobs: "Tâches"
@@ -281,6 +281,7 @@ fr:
   links: "Liens"
   link_remove: "Supprimer le lien"
   link_remove_confirm: "Désirez-vous supprimer le lien?"
+  unloadable_record: "Ce titre présente un problème: il peut être visualisé mais pas édité. Merci de contacter l'administrateur."
   validation_level_error: "Il y a des erreurs à corriger avant d'enregistrer."
   validation_level_warning: "Il y a des avertissements. Enregistrer à nouveau pour ignorer."
   
@@ -360,6 +361,7 @@ fr:
   filter_birth_place: "Lieu de naissance"
   filter_catalog: "Catalogue"
   filter_collection: "Collection"
+  filter_category_type: "Catégorie"
   filter_comments: "Commentaires"
   filter_composer: "Compositeur"
   filter_connected_libraries: "Bibliothèques"
@@ -367,7 +369,7 @@ fr:
   filter_creation_date: "Date de création"
   filter_date: "Date"
   filter_date_from: "Depuis la date"
-  filter_date_of_publication: "DATE OF PUBLICATION"
+  filter_date_of_publication: "Année de publication"
   filter_date_to: "Jusqu'à la date"
   filter_description: "Description"
   filter_digital_objects: "Digital Objects"
@@ -465,7 +467,10 @@ fr:
   filter_dist_594l: "Instruments à clavier"
   filter_dist_594m: "Autres instruments"
   filter_dist_594n: "Instruments de basse continue"
-  
+ 
+  ## Referring lists for auth files
+  refers_to_this: "%{model_from} se référant à cet(te) %{model_to}"
+
   rism_any_key: "N'importe quelle tonalité"
   rism_a_flat: "La bémol majeur/mineur"
   rism_a: "La majeur/mineur"
@@ -620,6 +625,18 @@ fr:
     published: "Publié"
     deleted: "Supprimé"
 
+  
+  dashboard:
+    selection: "Sélection"
+    type: "Type de modifications"
+    type_created: "Créé récemment"
+    type_updated: "Modifié récemment"
+    owner: "Propriétaire"
+    owner_user: "Moi-même"
+    owner_any: "N'importe quel utilisateur"
+    quantity: "Afficher"
+    update: "Mettre à jour"
+  
   # editor validation 
   validation:
     missing_message: "Une valeur dans ce champ est nécessaire"
@@ -634,6 +651,10 @@ fr:
     gross_pitch: "Contour mélodique grossier (similarité approximative)"
     anchor: "Au début uniquement"
     erase: "Effacer une note"
+
+  # This is used for the "incipit" seach in the search history in BL
+  # Note the capital 'I'
+  Incipit: "Incipit"
 
   date:
     month_names:

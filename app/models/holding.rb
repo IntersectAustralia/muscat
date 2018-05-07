@@ -1,4 +1,4 @@
-class Holding < ActiveRecord::Base
+class Holding < ApplicationRecord
   include ForeignLinks
   resourcify
 
@@ -15,6 +15,10 @@ class Holding < ActiveRecord::Base
   has_many :folder_items, :as => :item
   belongs_to :user, :foreign_key => "wf_owner"
   
+  has_and_belongs_to_many :people, join_table: "holdings_to_people"
+  has_and_belongs_to_many :catalogues, join_table: "holdings_to_catalogues"
+  has_and_belongs_to_many :places, join_table: "holdings_to_places"
+	
   composed_of :marc, :class_name => "MarcHolding", :mapping => %w(marc_source to_marc)
   
   before_save :set_object_fields
@@ -72,7 +76,7 @@ class Holding < ActiveRecord::Base
   def update_links
     return if self.suppress_recreate_trigger == true
     
-    allowed_relations = ["institutions"]
+    allowed_relations = ["institutions", "catalogues", "people", "places"]
     recreate_links(marc, allowed_relations)
   end
   
@@ -137,14 +141,6 @@ class Holding < ActiveRecord::Base
         
     MarcIndex::attach_marc_index(sunspot_dsl, self.to_s.downcase)
     
-  end
-  
-  def self.find_recent_updated(limit, user)
-    if user != -1
-      where("updated_at > ?", 5.days.ago).where("wf_owner = ?", user).limit(limit).order("updated_at DESC")
-    else
-      where("updated_at > ?", 5.days.ago).limit(limit).order("updated_at DESC") 
-    end
   end
 
   def display_name

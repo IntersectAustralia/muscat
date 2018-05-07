@@ -32,7 +32,7 @@
 
 
 
-class Source < ActiveRecord::Base
+class Source < ApplicationRecord
   
   # class variables for storing the user name and the event from the controller
   @last_user_save
@@ -480,15 +480,7 @@ class Source < ActiveRecord::Base
 
       self.marc.set_id self.id
       self.marc_source = self.marc.to_marc
-      self.without_versioning :save
-    end
-  end
-  
-  def self.find_recent_updated(limit, user)
-    if user != -1
-      where("updated_at > ?", 5.days.ago).where("wf_owner = ?", user).limit(limit).order("updated_at DESC")
-    else
-      where("updated_at > ?", 5.days.ago).limit(limit).order("updated_at DESC") 
+      paper_trail.without_versioning :save
     end
   end
   

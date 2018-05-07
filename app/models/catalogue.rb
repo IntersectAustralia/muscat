@@ -14,7 +14,7 @@
 # === Relations
 # * many to many with Sources
 
-class Catalogue < ActiveRecord::Base
+class Catalogue < ApplicationRecord
   include ForeignLinks
   include MarcIndex
   resourcify
@@ -30,12 +30,13 @@ class Catalogue < ActiveRecord::Base
   has_and_belongs_to_many(:referring_sources, class_name: "Source", join_table: "sources_to_catalogues")
   has_and_belongs_to_many(:referring_institutions, class_name: "Institution", join_table: "institutions_to_catalogues")
   has_and_belongs_to_many(:referring_people, class_name: "Person", join_table: "people_to_catalogues")
+  has_and_belongs_to_many(:referring_holdings, class_name: "Holding", join_table: "holdings_to_catalogues")
   has_and_belongs_to_many :people, join_table: "catalogues_to_people"
   has_and_belongs_to_many :institutions, join_table: "catalogues_to_institutions"
   has_and_belongs_to_many :places, join_table: "catalogues_to_places"
   has_and_belongs_to_many :standard_terms, join_table: "catalogues_to_standard_terms"
   has_many :folder_items, :as => :item
-  has_many :delayed_jobs, -> { where parent_type: "Catalogue" }, class_name: Delayed::Job, foreign_key: "parent_id"
+  has_many :delayed_jobs, -> { where parent_type: "Catalogue" }, class_name: 'Delayed::Backend::ActiveRecord::Job', foreign_key: "parent_id"
   belongs_to :user, :foreign_key => "wf_owner"
   
   # This is the forward link
@@ -257,7 +258,9 @@ class Catalogue < ActiveRecord::Base
               :join => { :from => :item_id, :to => :id })
     
     sunspot_dsl.integer :src_count_order, :stored => true do 
-      Catalogue.count_by_sql("select count(*) from sources_to_catalogues where catalogue_id = #{self[:id]}")
+      (Catalogue.count_by_sql("select count(*) from sources_to_catalogues where catalogue_id = #{self[:id]}") +
+      Catalogue.count_by_sql("select count(*) from institutions_to_catalogues where catalogue_id = #{self[:id]}") +
+      Catalogue.count_by_sql("select count(*) from people_to_catalogues where catalogue_id = #{self[:id]}"))
     end
     sunspot_dsl.time :updated_at
     sunspot_dsl.time :created_at
@@ -275,14 +278,6 @@ class Catalogue < ActiveRecord::Base
         #{self.referring_catalogues.count} catalogues and 
         #{self.referring_people.count} people}
       return false
-    end
-  end
-  
-  def self.find_recent_updated(limit, user)
-    if user != -1
-      where("updated_at > ?", 5.days.ago).where("wf_owner = ?", user).limit(limit).order("updated_at DESC")
-    else
-      where("updated_at > ?", 5.days.ago).limit(limit).order("updated_at DESC") 
     end
   end
 

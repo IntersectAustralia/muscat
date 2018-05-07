@@ -4,7 +4,7 @@ it:
     search_status:
       headline: "Ambito"
       current_filters: "Filtri in uso"
-    dashboard: Pannello
+    dashboard: "LAST WEEK ACTIVITY"
     dashboard_welcome:
       welcome: "Benvenuti in Active Admin. Questa è la pagina dashboard di default."
       call_to_action: "Per aggiungere sezioni alla dashboard controlla il file 'app/admin/dashboard.rb'"
@@ -228,7 +228,7 @@ it:
   menu_contact: "Contatti"
   menu_search_history: "Ricerche effettuate"
   menu_guidelines: "Regole di Catalogazione"
-  menu_marc_documentation: "Configurazione Marc"
+  menu_marc_documentation: "Configurazione MARC"
   menu_guidelines_top: "Documentazione"
   menu_cataloging: "Catalogazione"
   menu_jobs: "Processi in Background"
@@ -281,6 +281,7 @@ it:
   links: "Collegamenti"
   link_remove: "Elimina Collegamento"
   link_remove_confirm: "Sei sicuro di voler eliminare il collegamento?"
+  unloadable_record: "This record experienced loading errors: it can be viewed but not edited. Please contact an administrator."
   validation_level_error: "Sono presenti errori, correggerli prima di continuare"
   validation_level_warning: "Alcuni elementi richiedono attenzione, salvare ancora per procedere"
   
@@ -359,6 +360,7 @@ it:
   filter_autograph_of: "Autografo di"
   filter_birth_place: "Luogo di nascita"
   filter_catalog: "Catalogo"
+  filter_category_type: "Categoria"
   filter_collection: "Collezione"
   filter_comments: "Commenti"
   filter_composer: "Compositore"
@@ -367,7 +369,7 @@ it:
   filter_creation_date: "Data di composizione"
   filter_date: "Data"
   filter_date_from: "Data da"
-  filter_date_of_publication: "Luogo della pubblicatione"
+  filter_date_of_publication: "Anno della pubblicatione"
   filter_date_to: "Data a"
   filter_description: "Descrizione"
   filter_digital_objects: "Digital Objects"
@@ -412,7 +414,7 @@ it:
   filter_person_100d_deathdate: "Data di morte"
   filter_phone: "Telefono"
   filter_place: "Luogo"
-  filter_place_of_publication: "PLACE OF PUBLICATION"
+  filter_place_of_publication: "Luogo della pubblicazione"
   filter_provenance: "Provenienza"
   filter_record_type: "Tipo del Template"
   filter_record_type_short: "Tipo"
@@ -465,6 +467,9 @@ it:
   filter_dist_594l: "Strumenti da tasto"
   filter_dist_594m: "Altri strumenti"
   filter_dist_594n: "Strumenti del basso continuo"
+  
+  ## Referring lists for auth files
+  refers_to_this: "%{model_from} che fanno riferimento a questo %{model_to}"
   
   rism_any_key: "ogni tonalità"
   rism_a_flat: "La bemolle maggiore/minore"
@@ -620,6 +625,17 @@ it:
     published: "Pubblicato"
     deleted: "Cancellato"
 
+  dashboard:
+    selection: "SELECTION"
+    type: "CHANGE TYPE"
+    type_created: "RECENTLY CREATED"
+    type_updated: "RECENTLY UPDATED"
+    owner: "OWNER"
+    owner_user: "MYSELF"
+    owner_any: "ANY"
+    quantity: "DISPLAY"
+    update: "UPDATE"
+  
   # editor validation 
   validation:
     missing_message: "Questo campo deve contendere un valore"
@@ -634,6 +650,10 @@ it:
     gross_pitch: "Contorno melodico approssimato (ricerca più approssimativa)"
     anchor: "Ricerca solo nell'inizio"
     erase: "Cancella una nota"
+
+  # This is used for the "incipit" seach in the search history in BL
+  # Note the capital 'I'
+  Incipit: "Incipit"
 
   date:
     month_names:
