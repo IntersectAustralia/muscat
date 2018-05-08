@@ -14,10 +14,10 @@
 #
 # Usual wf_* fields are not shown
 
-class CanonicTechnique < ActiveRecord::Base
+class CanonicTechnique < ApplicationRecord
 
   has_and_belongs_to_many(:referring_sources, class_name: "Source", join_table: "sources_to_canonic_techniques")
-  has_many :delayed_jobs, -> { where parent_type: "CanonicTechnique" }, class_name: Delayed::Job, foreign_key: "parent_id"
+  has_many :delayed_jobs, -> { where parent_type: "CanonicTechnique" }, class_name: 'Delayed::Backend::ActiveRecord::Job', foreign_key: "parent_id"
   belongs_to :user, :foreign_key => "wf_owner"
 
   validates_presence_of :canon_type
