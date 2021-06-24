@@ -97,17 +97,17 @@ ActiveAdmin.register CanonicTechnique do
     column (I18n.t :display_canon_type) do |canonic_technique|
       "#{canonic_technique.canon_type}: #{canonic_technique.relation_denominator} #{canonic_technique.relation_operator} #{canonic_technique.relation_numerator}"
     end
-    column (I18n.t :display_interval) do |canonic_technique|
-      "#{canonic_technique.interval} #{canonic_technique.interval_direction}"
-    end
-    column (I18n.t :display_temporal_offset) do |canonic_technique|
-      offset = "#{canonic_technique.temporal_offset} #{canonic_technique.offset_units}"
-      if canonic_technique.mensurations.blank?
-        offset
-      else
-        "#{offset} in #{canonic_technique.mensurations}"
-      end
-    end
+    # column (I18n.t :display_interval) do |canonic_technique|
+    #   "#{canonic_technique.interval} #{canonic_technique.interval_direction}"
+    # end
+    # column (I18n.t :display_temporal_offset) do |canonic_technique|
+    #   offset = "#{canonic_technique.temporal_offset} #{canonic_technique.offset_units}"
+    #   if canonic_technique.mensurations.blank?
+    #     offset
+    #   else
+    #     "#{offset} in #{canonic_technique.mensurations}"
+    #   end
+    # end
     column (I18n.t :filter_sources), :src_count_order, sortable: :src_count_order do |element|
       all_hits = @arbre_context.assigns[:hits]
       active_admin_stored_from_hits(all_hits, element, :src_count_order)
@@ -132,11 +132,12 @@ ActiveAdmin.register CanonicTechnique do
       row (I18n.t :filter_relation_numerator) { |r| r.relation_numerator }
       row (I18n.t :filter_relation_operator) { |r| r.relation_operator }
       row (I18n.t :filter_relation_denominator) { |r| r.relation_denominator }
-      row (I18n.t :filter_interval) { |r| r.interval }
-      row (I18n.t :filter_interval_direction) { |r| r.interval_direction }
-      row (I18n.t :filter_temporal_offset) { |r| r.temporal_offset }
-      row (I18n.t :filter_offset_units) { |r| r.offset_units }
-      row (I18n.t :filter_mensurations) { |r| r.mensurations }
+      # Leaving the fields here as comments as there might be potential updates to the following code.
+      # row (I18n.t :filter_interval) { |r| r.interval }
+      # row (I18n.t :filter_interval_direction) { |r| r.interval_direction }
+      # row (I18n.t :filter_temporal_offset) { |r| r.temporal_offset }
+      # row (I18n.t :filter_offset_units) { |r| r.offset_units }
+      # row (I18n.t :filter_mensurations) { |r| r.mensurations }
     end
 
     active_admin_embedded_source_list( self, canonic_technique, !is_selection_mode? )
@@ -161,28 +162,31 @@ ActiveAdmin.register CanonicTechnique do
     f.object.relation_operator = "ex" unless f.object.persisted?
     f.inputs do
       f.input :canon_type, :label => (I18n.t :filter_canon_type), :as => :select,
-              :collection => ["unison canon", "double canon", "triple canon", "retrograde motion canon (cancrizans or crab canon)",
-                              "contrary motion canon (inversion canon)", "proportional canon", "mensuration canon",
-                              "continuous canon", "riddle canon", "puzzle canon", "enigmatic canon", "resolved canon",
-                              "invertible canon", "stacked canon", "octave transposition (parallel)", "canon per tonos",
-                              "interval canon", "precusor canon", "retrograde contrary motion canon", "verbal canon",
-                              "quadruple canon", "parallel canon", "perpetual canon", "permutation canon", "polymorphous canon"]
+              :collection => ["canon per tonos", "contrary motion canon (inversion canon)", "continuous canon",
+                              "double canon", "enigmatic canon", "interval canon", "invertible canon",
+                              "mensuration canon", "octave transposition (parallel)", "parallel canon",
+                              "permutation canon", "perpetual canon", "polymorphous canon", "precusor canon",
+                              "proportional canon", "puzzle canon", "quadruple canon",
+                              "retrograde contrary motion canon", "retrograde motion canon (cancrizans or crab canon)",
+                              "resolved canon", "riddle canon", "stacked canon", "triple canon", "unison canon",
+                              "verbal canon"]
       f.input :relation_numerator, :label => (I18n.t :filter_relation_numerator), :as => :number
       f.input :relation_operator, :label => (I18n.t :filter_relation_operator), :as => :select,
               :collection => ["ex", "to"]
       f.input :relation_denominator, :label => (I18n.t :filter_relation_denominator), :as => :number
-      f.input :interval, :label => (I18n.t :filter_interval), :as => :select,
-              :collection => ["unison", "2nd", "3rd", "4th", "5th", "6th", "7th", "8ve", "9th", "10th", "11th", "12th",
-                              "13th", "14th", "15th", "8ve and 4th", "8ve and 5th", "other"]
-      f.input :interval_direction, :label => (I18n.t :filter_interval_direction), :as => :select,
-              :collection => ["above", "below"]
-      f.input :temporal_offset, :label => (I18n.t :filter_temporal_offset), :as => :number
-      f.input :offset_units, :label => (I18n.t :filter_offset_units), :as => :select,
-              :collection => ["semiminim(s)", "minim(s)", "semibreve(s)", "breve(s)", "long(s)", "maxima(e)",
-                              "tempus", "tempora", "semiquaver(s)", "quaver(s)", "crotchet(s)", "dotted semiminim(s)",
-                              "dotted minim(s)", "dotted semibreve(s)", "dotted breve(s)", "dotted long(s)", "other"]
-      f.input :mensurations, :label => (I18n.t :filter_mensurations)
-      f.input :lock_version, :as => :hidden
+      # Leaving the fields here as comments as there might be potential updates to the following code.
+      # f.input :interval, :label => (I18n.t :filter_interval), :as => :select,
+      #         :collection => ["unison", "2nd", "3rd", "4th", "5th", "6th", "7th", "8ve", "9th", "10th", "11th", "12th",
+      #                         "13th", "14th", "15th", "8ve and 4th", "8ve and 5th", "other"]
+      # f.input :interval_direction, :label => (I18n.t :filter_interval_direction), :as => :select,
+      #         :collection => ["above", "below"]
+      # f.input :temporal_offset, :label => (I18n.t :filter_temporal_offset), :as => :number
+      # f.input :offset_units, :label => (I18n.t :filter_offset_units), :as => :select,
+      #         :collection => ["semiminim(s)", "minim(s)", "semibreve(s)", "breve(s)", "long(s)", "maxima(e)",
+      #                         "tempus", "tempora", "semiquaver(s)", "quaver(s)", "crotchet(s)", "dotted semiminim(s)",
+      #                         "dotted minim(s)", "dotted semibreve(s)", "dotted breve(s)", "dotted long(s)", "other"]
+      # f.input :mensurations, :label => (I18n.t :filter_mensurations)
+      # f.input :lock_version, :as => :hidden
     end
   end
 

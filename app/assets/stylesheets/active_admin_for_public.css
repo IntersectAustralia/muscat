@@ -1,0 +1,10 @@
+/* Active Admin CSS to be used for displaying works to public - Using the same active admin styles as request by the customer*/
+
+/* line 33, ../usr/local/bundle/gems/bootstrap-sass-3.4.1/assets/stylesheets/bootstrap/_panels.scss */
+.panel-title {
+    margin-top: 0 !important;
+    margin-bottom: 0;
+    font-size: 16px;
+    color: inherit;
+    padding-top: 2px !important;
+}

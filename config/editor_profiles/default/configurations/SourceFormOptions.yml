@@ -683,31 +683,31 @@
     fields:
     - - a
       - values:
-        - "unison canon"
-        - "double canon"
-        - "triple canon"
-        - "retrograde motion canon (cancrizans or crab canon)"
-        - "contrary motion canon (inversion canon)"
-        - "proportional canon"
-        - "mensuration canon"
-        - "continuous canon"
-        - "riddle canon"
-        - "puzzle canon"
-        - "enigmatic canon"
-        - "resolved canon"
-        - "invertible canon"
-        - "stacked canon"
-        - "octave transposition (parallel)"
         - "canon per tonos"
+        - "contrary motion canon (inversion canon)"
+        - "continuous canon"
+        - "double canon"
+        - "enigmatic canon"
         - "interval canon"
-        - "precusor canon"
-        - "retrograde contrary motion canon"
-        - "verbal canon"
-        - "quadruple canon"
+        - "invertible canon"
+        - "mensuration canon"
+        - "octave transposition (parallel)"
         - "parallel canon"
-        - "perpetual canon"
         - "permutation canon"
+        - "perpetual canon"
         - "polymorphous canon"
+        - "precusor canon"
+        - "proportional canon"
+        - "puzzle canon"
+        - "quadruple canon"
+        - "retrograde contrary motion canon"
+        - "retrograde motion canon (cancrizans or crab canon)"
+        - "resolved canon"
+        - "riddle canon"
+        - "stacked canon"
+        - "triple canon"
+        - "unison canon"
+        - "verbal canon"
         editor_partial: subfield_select
     - - b
     - - c
@@ -720,6 +720,7 @@
         editor_partial: subfield_select
     - - e
       - values:
+        - " "
         - "unison"
         - "2nd"
         - "3rd"
@@ -741,12 +742,14 @@
         editor_partial: subfield_select
     - - f
       - values:
+        - " "
         - "above"
         - "below"
         editor_partial: subfield_select
     - - g
     - - h
       - values:
+        - " "
         - "semiminim(s)"
         - "minim(s)"
         - "semibreve(s)"
@@ -766,6 +769,7 @@
         - "other"
         editor_partial: subfield_select
     - - o
+
 "700":
   new_window: people
   new_window_field: full_name_equals
